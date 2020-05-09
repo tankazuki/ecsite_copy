@@ -125,3 +125,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media_techpit/'
 
 AUTH_USER_MODEL = 'amazon.User'
+
+LOGIN_URL = 'amazon:login'
+LOGIN_REDIRECT_URL = 'amazon:lp'
+LOGOUT_REDIRECT_URL = 'amazon:lp'

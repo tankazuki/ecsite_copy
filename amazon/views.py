@@ -1,5 +1,7 @@
+from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView, ListView, DetailView
 
+from .forms import LoginForm
 from .models import Product
 
 
@@ -28,3 +30,8 @@ class ItemList(ListView):
 class ItemDetail(DetailView):
     model = Product
     template_name = 'amazon/item_detail.html'
+
+
+class Login(LoginView):
+    form_class = LoginForm
+    template_name = 'amazon/login.html'

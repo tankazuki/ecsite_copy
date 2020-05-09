@@ -15,7 +15,7 @@
     <link href="{% static 'css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)" />
     <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
 
-    <title>amazon</title>
+    <title>techpit amazon</title>
     <body>
         <header class="section-header">
             <section class="header-main">
@@ -30,7 +30,9 @@
                         </a>
                         </div>
                         <div class="col-lg-6 col-sm-6">
+                            <!-- [3-6] フォームのaction属性変更 ここから -->
                             <form method= "get" action="{% url 'amazon:item_list' %}" class="search-wrap">
+                            <!-- [3-6] フォームのaction属性変更 ここまで -->
                                 <div class="input-group">
                                     <input name="q" type="text" class="form-control" placeholder="Search">
                                     <div class="input-group-append">
@@ -43,13 +45,20 @@
                         </div> <!-- col.// -->
                         <div class="col-lg-3 col-sm-6">
                             <div class="widgets-wrap d-flex justify-content-end">
-
+                                <!-- [5-6] ログイン状態による分岐追加 ここから -->
                                 <div class="widget-header icontext">
                                     <div class="icon-wrap icon-sm bg2 round text-secondary"><i class="fa fa-user"></i></div>
                                     <div class="text-wrap">
+                                        {% if user.is_authenticated %}
+                                        <small>{{user.name}}さん</small>
+                                        <span><a href="{% url 'amazon:logout' %}">Logout</a></span>
+                                        {% else %}
                                         <small>ゲスト</small>
+                                        <span><a href="{% url 'amazon:login' %}">Login</a></span>
+                                        {% endif %}
                                     </div>
                                 </div> <!-- widget  dropdown.// -->
+                                <!-- [5-6] ログイン状態による分岐追加 ここまで -->
                             </div>	<!-- widgets-wrap.// -->
                         </div> <!-- col.// -->
                     </div> <!-- row.// -->
