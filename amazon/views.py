@@ -6,6 +6,12 @@ from .models import Product
 class Lp(TemplateView):
     template_name = 'amazon/lp.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        items = Product.objects.all()
+        context['items'] = items
+        return context
+
 
 class ItemList(ListView):
     model = Product
