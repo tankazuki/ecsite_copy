@@ -1,8 +1,8 @@
 from django.urls import path
 from . import views
 
-appname = 'amazon'
+app_name = 'amazon'
 
 urlpatterns = [
-    path('lp/', views.Lp.as_view(), name='lp')
+    path('lp/', views.Lp.as_view(), name='lp'),
 ]

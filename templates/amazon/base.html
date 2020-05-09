@@ -1,0 +1,78 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+
+    <link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+    <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+
+    <title>amazon</title>
+    <body>
+        <header class="section-header">
+            <section class="header-main">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                        <a href="{% url 'amazon:lp' %}">
+                            <div class="brand-wrap">
+                                <img class="logo" src="{% static 'images/logo-dark.png' %}">
+                                <h2 class="logo-text">Techpit amazon</h2>
+                            </div> <!-- brand-wrap.// -->
+                        </a>
+                        </div>
+                        <div class="col-lg-6 col-sm-6">
+                            <form method= "get" action="" class="search-wrap">
+                                <div class="input-group">
+                                    <input name="q" type="text" class="form-control" placeholder="Search">
+                                    <div class="input-group-append">
+                                        <button id="id_search_button" class="btn btn-warning" type="submit">
+                                        <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form> <!-- search-wrap .end// -->
+                        </div> <!-- col.// -->
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="widgets-wrap d-flex justify-content-end">
+
+                                <div class="widget-header icontext">
+                                    <div class="icon-wrap icon-sm bg2 round text-secondary"><i class="fa fa-user"></i></div>
+                                    <div class="text-wrap">
+                                        <small>ゲスト</small>
+                                    </div>
+                                </div> <!-- widget  dropdown.// -->
+                            </div>	<!-- widgets-wrap.// -->
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+                </div> <!-- container.// -->
+            </section> <!-- header-main .// -->
+        </header> <!-- section-header.// -->
+        <div class="container" style="padding: 2rem">
+                {% block content %}{% endblock %}
+        </div>
+        <footer class="section-footer bg2">
+            <div class="container">
+                <section class="footer-bottom row">
+
+                    <div class="col-sm-12">
+                        <p class="text-sm-right">
+        Copyright © 2019
+        <a href="#">Techpit</a>
+                        </p>
+                    </div>
+                </section> <!-- //footer-top -->
+            </div><!-- //container -->
+        </footer>
+
+         {% block scripts %}{% endblock %}
+    </body>
+</html>

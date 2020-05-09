@@ -20,5 +20,5 @@ from amazon import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('amazon.urls'))
+    path('amazon/', include('amazon.urls'))
 ]
