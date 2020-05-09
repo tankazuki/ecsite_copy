@@ -25,4 +25,3 @@ class Product(models.Model):
     description = models.TextField(
         verbose_name='説明',
     )
-    
