@@ -1,0 +1,65 @@
+{% extends "amazon/base.html" %}
+{% block content %}
+{% load static %}
+
+<main class="mt-5 pt-4">
+    <div class="container dark-grey-text mt-5">
+        <div class="row wow fadeIn">
+            <div class="col-md-6 mb-4">
+                <img src="{{ object.thumbnail.url }}" class="img-fluid" alt="">
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="p-4">
+                    <div class="mb-3">
+                        <a href="">
+                        <span class="badge purple mr-1">Category 2</span>
+                        </a>
+                        <a href="">
+                        <span class="badge blue mr-1">New</span>
+                        </a>
+                        <a href="">
+                        <span class="badge red mr-1">Bestseller</span>
+                        </a>
+                    </div>
+                    <p class="lead">
+                        <h2>{{ object.name }}</h2>
+                        <span>¥{{ object.price }}</span>
+                    </p>
+                    <p class="lead font-weight-bold">商品説明</p>
+                    <p>{{ object.description }}</p>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row d-flex justify-content-center wow fadeIn">
+
+            <div class="col-md-6 text-center">
+
+                <h4 class="my-4 h4">Additional information</h4>
+
+                <p>
+                    Djangoのようなフレームワークを利用しても、ページのデザインを綺麗にすることはできません。
+                    恐らくこの教材で学習している方のほとんどがどちらかというとサーバサイドを勉強している方が多いのかと思慮しますので、
+                    htmlやcssの部分はあまり得意でないという方が多いと思います。そのような方はぜひBootstrap等のCSSフレームワークを利用することをお勧めします。
+                    また、コードのスニペットをネット上から拝借するのも非常に良いと思います。日本の
+                    サイトですとまだこのスニペットのまとめサイトのようなものは少ないですが、海外ですと無数に存在するので、ぜひそれらを活用していただくことをお勧めします。(無料で公開されていることろが多いです)
+                    特にログイン画面やサインアップ部分は「bootstrap login snippet」等で検索するといろいろな方が作成したスニペットが出てくるので、是非今後「自分でサービス開発したい！」となった際にご参考にしていただければと思います。
+                </p>
+            </div>
+        </div>
+        <div class="row wow fadeIn">
+            <div class="col-lg-4 col-md-12 mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
+
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
+
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

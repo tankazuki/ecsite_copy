@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 
 from .models import Product
 
@@ -23,3 +23,8 @@ class ItemList(ListView):
             q = self.request.GET['q']
             products = products.filter(name__icontains=q)
         return products
+
+
+class ItemDetail(DetailView):
+    model = Product
+    template_name = 'amazon/item_detail.html'
