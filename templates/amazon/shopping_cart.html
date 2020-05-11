@@ -1,0 +1,108 @@
+{% extends "amazon/base.html" %}
+{% block content %}
+{% load static %}
+
+{% if object.cart_items.all %}
+ <div class="card shopping-cart">
+    <div class="card-body">
+        {% for cart_item in object.cart_items.all %}
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-2 text-center">
+                    <img class="img-responsive" src="{{ cart_item.product.thumbnail.url }}" alt="prewiew" width="120" height="80">
+            </div>
+            <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
+                <h4 class="product-name"><strong>{{ cart_item.product.name }}</strong></h4>
+                <h4>
+                    <small>{{ cart_item.product.description }}</small>
+                </h4>
+            </div> <!-- col -->
+            <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
+                <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
+                    <h6><strong>{{ cart_item.product.price }} <span class="text-muted">x</span></strong></h6>
+                </div>
+                <div class="col-4 col-sm-4 col-md-4">
+                    <div class="quantity">
+                        <input name="amount" pk="{{ cart_item.pk }}" type="number" class="form-control" step="1" max="99" min="1" title="Qty" class="qty" size="4" value="{{ cart_item.amount }}">
+                    </div>
+                </div>
+                <div class="col-2 col-sm-2 col-md-2 text-right">
+                    <button name="delete" pk="{{ cart_item.pk }}" type="button" class="btn btn-outline-danger btn-xs">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div> <!-- col -->
+        </div> <!-- row -->
+        {% endfor %}
+        <hr>
+    </div> <!-- card body -->
+    <div class="card-footer">
+        <a href="" class="btn btn-success pull-right">Checkout</a>
+        <div class="float-right">Total price: <b> ¥{{ object.total_price }}</b></div>
+    </div>
+    </div> <!-- card footer -->
+</div> <!-- card -->
+{% else %}
+<p>カートが空です</p>
+{% endif %}
+{% endblock %}
+
+<!-- [7-5] Ajaxリクエスト部分追加 ここから -->
+{% block scripts %}
+<script>
+    function call_update_amount(_pk, _amount) {
+        return $.ajax({
+            url: '{% url "amazon:update_cart_item_amount" %}',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                cart_item_pk: _pk,
+                amount: _amount
+            }
+        });
+    }
+    function call_delete_item(_pk) {
+        return $.ajax({
+            url: '{% url "amazon:delete_cart_item" %}',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                cart_item_pk: _pk
+            }
+        });
+    }
+
+    $(function() {
+        var $input_amount = $('input[name="amount"]');
+        var $delete_button = $('button[name="delete"]');
+        $input_amount.on('change', function() {
+            var cart_item_pk = $(this).attr('pk');
+            var new_amount = parseInt($(this).val());
+            call_update_amount(cart_item_pk, new_amount)
+            .done((data) => {
+                if (data.success) {
+                    location.reload();
+                    return;
+                }
+                alert(data.error);
+            })
+            .fail((ata, textStatus, xhr) => {
+                alert(xhr);
+            });
+        });
+        $delete_button.on('click', function() {
+            var cart_item_pk = $(this).attr('pk');
+            call_delete_item(cart_item_pk)
+            .done((data) => {
+                if (data.success) {
+                    location.reload();
+                    return;
+                }
+                alert(data.error);
+            })
+            .fail((ata, textStatus, xhr) => {
+                alert(xhr);
+            });
+        });
+    })
+</script>
+{% endblock %}

@@ -12,4 +12,7 @@ urlpatterns = [
     path('logout', auth_view.LogoutView.as_view(), name='logout'),
     path('signup/', views.SignUp.as_view(), name='signup'),
     path('signup/done/<token>', views.SignUpDone.as_view(), name='signup_done'),
+    path('cart/<int:pk>', views.ShoppingCartDetail.as_view(), name='cart'),
+    path('ajax_amount/', views.update_cart_item, name='update_cart_item_amount'),
+    path('ajax_delete', views.delete_cart_item, name='delete_cart_item'),
 ]

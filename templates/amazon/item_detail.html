@@ -25,18 +25,30 @@
                         <h2>{{ object.name }}</h2>
                         <span>¥{{ object.price }}</span>
                     </p>
+
                     <p class="lead font-weight-bold">商品説明</p>
                     <p>{{ object.description }}</p>
+
+                    <!--  [7-5 追加]カートに追加ボタン ここから -->
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'amazon:cart' user.cart.pk %}" class="d-flex justify-content-left">
+                        {% csrf_token %}
+                        <!-- Default input -->
+                        <input name="product_pk" type="hidden" value="{{ object.pk }}">
+                        <input name="amount" type="number" value="1" aria-label="Search" class="form-control" style="width: 100px; margin-right: 1rem">
+                        <button class="btn btn-primary btn-md my-0 p" type="submit">Add to cart
+                        <i class="fas fa-shopping-cart ml-1"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                     <!--  [7-5 追加]カートに追加ボタン ここまで -->
                 </div>
             </div>
         </div>
         <hr>
         <div class="row d-flex justify-content-center wow fadeIn">
-
             <div class="col-md-6 text-center">
-
                 <h4 class="my-4 h4">Additional information</h4>
-
                 <p>
                     Djangoのようなフレームワークを利用しても、ページのデザインを綺麗にすることはできません。
                     恐らくこの教材で学習している方のほとんどがどちらかというとサーバサイドを勉強している方が多いのかと思慮しますので、
