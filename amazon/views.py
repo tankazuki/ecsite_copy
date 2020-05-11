@@ -7,9 +7,10 @@ from django.http import HttpResponseRedirect, HttpResponseBadRequest, JsonRespon
 from django.template.loader import get_template
 from django.urls import reverse
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.views.generic.edit import ModelFormMixin
 
 from ecsite import settings
-from .forms import LoginForm, SignUpForm
+from .forms import LoginForm, SignUpForm, ReviewForm
 from .models import Product, User, ShoppingCart, ShoppingCartItem
 
 
@@ -35,9 +36,25 @@ class ItemList(ListView):
         return products
 
 
-class ItemDetail(DetailView):
+class ItemDetail(ModelFormMixin, DetailView):
     model = Product
     template_name = 'amazon/item_detail.html'
+    form_class = ReviewForm
+
+    def form_valid(self, form):
+        review = form.save(commit=False)
+        review.product = self.get_object()
+        review.user = self.request.user
+        review.save()
+        return HttpResponseRedirect(self.request.path_info)
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            self.object = self.get_object()
+            return self.form_invalid(form)
 
 
 class Login(LoginView):

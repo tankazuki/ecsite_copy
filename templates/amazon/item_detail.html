@@ -2,6 +2,10 @@
 {% block content %}
 {% load static %}
 
+<!-- [8-3]JSフレームワーク追加 ここから -->
+<script src="{% static 'js/rater.js' %}" type="text/javascript"></script>
+<!-- [8-3]JSフレームワーク追加 ここまで -->
+
 <main class="mt-5 pt-4">
     <div class="container dark-grey-text mt-5">
         <div class="row wow fadeIn">
@@ -25,10 +29,40 @@
                         <h2>{{ object.name }}</h2>
                         <span>¥{{ object.price }}</span>
                     </p>
+                    <!-- [8-3]その商品の平均評価を星で表現 ここから -->
+                    <p>
+                        <span>
+                            {% if object.avg_rating > 0 %}
+                            <span>★</i></span>
+                            {% else %}
+                            <span>☆</span>
+                            {% endif %}
+                            {% if object.avg_rating > 1 %}
+                            <span>★</i></span>
+                            {% else %}
+                            <span>☆</span>
+                            {% endif %}
+                            {% if object.avg_rating > 2 %}
+                            <span>★</i></span>
+                            {% else %}
+                            <span>☆</span>
+                            {% endif %}
+                            {% if object.avg_rating > 3 %}
+                            <span>★</i></span>
+                            {% else %}
+                            <span>☆</span>
+                            {% endif %}
+                            {% if object.avg_rating > 4 %}
+                            <span>★</i></span>
+                            {% else %}
+                            <span>☆</span>
+                            {% endif %}
+                        </span>
+                    </p>
+                    <!-- [8-3]その商品の平均評価を星で表現 開始 ここまで -->
 
                     <p class="lead font-weight-bold">商品説明</p>
                     <p>{{ object.description }}</p>
-
                     <!--  [7-5 追加]カートに追加ボタン ここから -->
                     {% if user.is_authenticated %}
                     <form method="post" action="{% url 'amazon:cart' user.cart.pk %}" class="d-flex justify-content-left">
@@ -46,9 +80,94 @@
             </div>
         </div>
         <hr>
+        <!-- [8-3]レビュフォームを追加 ここから -->
+        {% if user.is_authenticated %}
+        <form action="" method="POST">
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+                    {% if field.name == 'rating' %}
+                    <div class="rating"></div>
+                    {% endif %}
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">投稿</button>
+        </form>
+        {% endif %}
+        <!-- [8-3]レビュフォームを追加 ここまで -->
+
+        <!-- [8-3]レビュ一覧を追加 ここから -->
+        {% if object.reviews.all %}
+        <div class="container">
+            <h2 class="text-center">レビュー</h2>
+
+            {% for review in object.reviews.all %}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="icon-wrap icon-md bg2 round text-secondary text-center">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div class="pull-left">
+                                    <small>{{ review.user.name }}</small>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <strong>{{ review.title }}</strong>
+                                <p class="float-right">
+                                    {% if review.rating > 0 %}
+                                    <span>★</i></span>
+                                    {% else %}
+                                    <span>☆</span>
+                                    {% endif %}
+                                    {% if review.rating > 1 %}
+                                    <span>★</i></span>
+                                    {% else %}
+                                    <span>☆</span>
+                                    {% endif %}
+                                    {% if review.rating > 2 %}
+                                    <span>★</i></span>
+                                    {% else %}
+                                    <span>☆</span>
+                                    {% endif %}
+                                    {% if review.rating > 3 %}
+                                    <span>★</i></span>
+                                    {% else %}
+                                    <span>☆</span>
+                                    {% endif %}
+                                    {% if review.rating > 4 %}
+                                    <span>★</i></span>
+                                    {% else %}
+                                    <span>☆</span>
+                                    {% endif %}
+
+                                </p>
+                                <div class="clearfix"></div>
+                                <p>{{ review.comment }}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>レビュはありません</p>
+        {% endif %}
+        <hr>
+        <!-- [8-3]レビュ一覧を追加 ここまで -->
+
         <div class="row d-flex justify-content-center wow fadeIn">
+
             <div class="col-md-6 text-center">
+
                 <h4 class="my-4 h4">Additional information</h4>
+
                 <p>
                     Djangoのようなフレームワークを利用しても、ページのデザインを綺麗にすることはできません。
                     恐らくこの教材で学習している方のほとんどがどちらかというとサーバサイドを勉強している方が多いのかと思慮しますので、
@@ -74,4 +193,29 @@
         </div>
     </div>
 </main>
+{% endblock %}
+
+<!--  [8-3]raterフレームワーク導入 ここから -->
+{% block scripts %}
+<script>
+    $(function() {
+        var options = {
+            max_value: 5,
+            step_size: 1,
+            initial_value: 0,
+            selected_symbol_type: 'utf8_star', // Must be a key from symbols
+            cursor: 'default',
+            readonly: false,
+            change_once: false, // Determines if the rating can only be set once
+        }
+
+        var $rating = $(".rating");
+        var $rating_input = $('#id_rating');
+
+        $rating.rate(options);
+        $rating.on('change', function() {
+            $rating_input.val(parseInt($(this).rate('getValue')));
+        });
+    });
+</script>
 {% endblock %}
